@@ -10,19 +10,24 @@
 
   if (shareimg && navigator.canShare) {
     share = async function() {
-      const response = await fetch(shareimg);
-      const blob = await response.blob();
-      const imageExtension = blob.type.replace("image/", "");
-      const file = new File([blob], `image.${imageExtension}`, {
-        type: blob.type
-      });
+      try {
+        const response = await fetch(shareimg);
+        const blob = await response.blob();
+        const imageExtension = blob.type.replace("image/", "");
+        const file = new File([blob], `image.${imageExtension}`, {
+          type: blob.type
+        });
+        console.log(`running correct function! file is ${file}`);
 
-      navigator.share({
-        url: shareurl,
-        title: sharetitle,
-        text: sharetext,
-        files: [file]
-      });
+        navigator.share({
+          url: shareurl,
+          title: sharetitle,
+          text: sharetext,
+          files: [file]
+        });
+      } catch (error) {
+        console.log(error);
+      }
     };
   } else {
     share = function() {
